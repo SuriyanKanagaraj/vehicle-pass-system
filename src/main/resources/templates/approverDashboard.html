@@ -1,0 +1,316 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<div th:replace="/fragments/header :: header" />
+<style>
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th {
+	border: 0px solid #b3b3b3;
+	text-align: left;
+	padding: 8px;
+	background-color: #e6e6e6;
+}
+
+td {
+	border: 0px solid #b3b3b3;
+	text-align: left;
+	padding: 8px;
+}
+
+tr:hover {
+	background: #f2f2f2;
+}
+
+.application-grid-container {
+	font-family: arial, sans-serif;
+	border: 2px solid #e6e6e6;
+	width: 100%;
+	position: relative;
+	overflow: auto;
+}
+
+#overlay {
+	position: fixed;
+	display: none;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 2;
+}
+
+#createAppDialog {
+	position: fixed;
+	z-index: 3;
+	top: 50px;
+	width: 800px;
+	height: 540px;
+}
+
+.glyphicon-ok {
+	color: #ffffff;
+}
+
+.stepper-wrapper {
+	margin-top: auto;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.stepper-item {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex: 1;
+	@media
+	(
+	max-width
+	:
+	768px)
+{
+	font-size
+	
+	
+	:
+	
+	 
+	
+	12px
+	
+	
+	;
+}
+
+}
+.stepper-item::before {
+	position: absolute;
+	content: "";
+	border-bottom: 2px solid #ccc;
+	width: 100%;
+	top: 20px;
+	left: -50%;
+	z-index: 2;
+}
+
+.stepper-item::after {
+	position: absolute;
+	content: "";
+	border-bottom: 2px solid #ccc;
+	width: 100%;
+	top: 20px;
+	left: 50%;
+	z-index: 2;
+}
+
+.stepper-item .step-counter {
+	position: relative;
+	z-index: 5;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: #ccc;
+	margin-bottom: 6px;
+}
+
+.stepper-item.active {
+	font-weight: bold;
+}
+
+.stepper-item.completed .step-counter {
+	background-color: #4bb543;
+}
+
+.stepper-item.completed::after {
+	position: absolute;
+	content: "";
+	border-bottom: 2px solid #4bb543;
+	width: 100%;
+	top: 20px;
+	left: 50%;
+	z-index: 3;
+}
+
+.stepper-item:first-child::before {
+	content: none;
+}
+
+.stepper-item:last-child::after {
+	content: none;
+}
+
+.selected {
+	background: #f2f2f2;
+}
+</style>
+
+<script type="text/javascript">
+	function closeCreateAppDialog() {
+		document.getElementById("overlay").style.display = "none";
+		const element = document.getElementById("createAppDialog");
+		element.open = false;
+	}
+</script>
+
+</head>
+
+<body>
+	<div th:replace="/fragments/header :: navbar" />
+	<div class="container">
+		<div class="alert alert-info" th:if="${successMessage}"
+			th:utext="${successMessage}"></div>
+		<div class="row" style="margin-top: 10px">
+			<div>
+				<form role="form" th:object="${applicationList}">
+					<div class="row">
+						<div class="application-grid-container"
+							style="margin-top: 40px; height: 226px;">
+							<table>
+								<tr>
+									<th>Vehicle No</th>
+									<th>Application Date</th>
+									<th>Expiry Date</th>
+									<th>Status</th>
+									<th hidden="true">Stage</th>
+								</tr>
+								<tr th:each="vehicleApplication, itemStat : ${applicationList}"
+									tabindex="0">
+									<td th:text="${vehicleApplication.getVehicleNumber()}"></td>
+									<td th:text="${vehicleApplication.getApplicationDate()}"></td>
+									<td th:text="${vehicleApplication.getExpiryDate()}"></td>
+									<td th:text="${vehicleApplication.getStatus()}"></td>
+									<td th:text="${vehicleApplication.getStage()}" hidden="true"></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<dialog id="createAppDialog" style="overflow:auto;"
+			th:open="${isToOpenDialog == 'true'}">
+		<form action="#" th:action="@{/updateApplication}" method="post"
+			role="form">
+			<div class="row"
+				style="background-color: #e6e6e6; margin-right: -14px; margin-left: -14px;">
+				<h3 style="margin-left: 8px;">Vehicle Application Form</h3>
+			</div>
+			<div class="row"
+				style="margin-top: 16px; margin-left: -8px; margin-right: -8px;">
+				<label class="col-sm-4 col-form-label-lg"
+					style="text-align: right; margin-top: 12px;">Vehicle
+					Registration No.</label>
+				<div class="col-sm-6">
+					<input id="vehicle-registration-no" type="text"
+						placeholder="Vehicle Registration No."
+						class="form-control input-lg" disabled="true" />
+				</div>
+			</div>
+			<div class="row"
+				style="margin-top: 8px; margin-left: -8px; margin-right: -8px;">
+				<label class="col-sm-4 col-form-label-lg"
+					style="text-align: right; margin-top: 12px;">Make and Model
+					of the Vehicle</label>
+				<div class="col-sm-6">
+					<input id="vehicle-make-and-model" type="text"
+						placeholder="Make and Model of the Vehicle"
+						class="form-control input-lg" disabled="true" />
+				</div>
+			</div>
+			<div class="row"
+				style="margin-top: 8px; margin-left: -8px; margin-right: -8px;">
+				<label class="col-sm-4 col-form-label-lg"
+					style="text-align: right; margin-top: 12px;">Name of the RC
+					Holder</label>
+				<div class="col-sm-6">
+					<input id="rc-holder-name" type="text"
+						placeholder="Name of the RC Holder" class="form-control input-lg"
+						disabled="true" />
+				</div>
+			</div>
+			<div class="row"
+				style="margin-top: 8px; margin-left: -8px; margin-right: -8px;">
+				<label class="col-sm-4 col-form-label-lg"
+					style="text-align: right; margin-top: 12px;">Validity of
+					the insurance</label>
+				<div class="col-sm-6">
+					<input id="insurance-validity" type="text"
+						placeholder="Validity of the insurance"
+						class="form-control input-lg" disabled="true" />
+				</div>
+			</div>
+			<div class="row"
+				style="margin-top: 16px; margin-left: -8px; margin-right: -8px;">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-6">
+					<input id="is-vehicle-owned-by-others" type="checkbox"
+						id="isVehicleOwnedByOthers"
+						onchange="var checkBox = document.getElementById('isVehicleOwnedByOthers');var vehicleOwnerDetailsDiv = document.getElementById('vehicleOwnerDetailsDiv');if (checkBox.checked == true) {vehicleOwnerDetailsDiv.style.display = 'block';} else {vehicleOwnerDetailsDiv.style.display = 'none';}"
+						disabled="true" /> <label> Is Vehicle Owned by Others</label>
+				</div>
+			</div>
+			<div id="vehicleOwnerDetailsDiv" style="display: none;">
+				<div class="row"
+					style="margin-top: 16px; margin-left: -8px; margin-right: -8px;">
+					<label class="col-sm-4 col-form-label-lg"
+						style="text-align: right; margin-top: 12px;">Relation to
+						the Student</label>
+					<div class="col-sm-6">
+						<input id="relation-to-student" type="text"
+							placeholder="Relation to the Student"
+							class="form-control input-lg" disabled="true" />
+					</div>
+				</div>
+				<div class="row"
+					style="margin-top: 8px; margin-left: -8px; margin-right: -8px;">
+					<label class="col-sm-4 col-form-label-lg"
+						style="text-align: right; margin-top: 12px;">Mobile number
+						of the RC holder</label>
+					<div class="col-sm-6">
+						<input id="rc-holdder-mobile-no" type="text"
+							placeholder="Mobile number of the RC holder"
+							class="form-control input-lg" disabled="true" />
+					</div>
+				</div>
+				<div class="row"
+					style="margin-top: 8px; margin-left: -8px; margin-right: -8px;">
+					<label class="col-sm-4 col-form-label-lg"
+						style="text-align: right; margin-top: 12px;">Address of
+						the RC holder</label>
+					<div class="col-sm-6">
+						<input id="rc-holder-address" type="text"
+							placeholder="Address of the RC holder"
+							class="form-control input-lg" disabled="true" />
+					</div>
+				</div>
+			</div>
+			<div class="row"
+				style="margin-top: 32px; margin-left: -8px; margin-right: -8px;">
+				<div class="col-sm-4">
+					<input type="submit" class="btn btn-primary btn-block"
+						value="Approve" />
+				</div>
+				<div class="col-sm-4">
+					<input type="button" class="btn btn-primary btn-block"
+						value="Close" onclick="closeCreateAppDialog()" />
+				</div>
+			</div>
+		</form>
+		</dialog>
+		<div id="overlay"></div>
+	</div>
+	<div th:replace="/fragments/footer :: footer" />
+</body>
+</html>

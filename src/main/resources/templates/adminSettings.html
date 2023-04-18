@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <div th:replace="/fragments/header :: header"/>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th {
+      border: 0px solid #b3b3b3;
+      text-align: left;
+      padding: 8px;
+      background-color: #e6e6e6;
+    }
+    td {
+      border: 0px solid #b3b3b3;
+      text-align: left;
+      padding: 8px;
+      background: #f2f2f2;
+    }
+  </style>
+</head>
+
+<body>
+
+<div th:replace="/fragments/header :: navbar"/>
+
+
+<div class="container">
+
+    <div class="alert alert-info" th:if="${successMessage}" th:utext="${successMessage}"></div>
+
+    <div class="row" style="margin-top:10px">
+        <div>
+            <form action="#" th:action="@{/adminSettings}" method="post" role="form" th:object="${wrapper}">
+                  <div class="row" style="background-color: #e6e6e6;">
+                    <h3 style="margin-left: 8px;">Admin Settings</h3>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="collegeName" class="col-sm-2 col-form-label-lg" style="text-align:right;margin-top:12px;">College Name</label>
+                    <div class="col-sm-7">
+                      <input th:if="${disable == 'true'}" type="text" th:field="${wrapper.adminSettings.collegeName}" placeholder="College Name" class="form-control input-lg" th:attr="disabled=${disable}"/>
+                      <input th:unless="${disable == 'true'}" type="text" th:field="${wrapper.adminSettings.collegeName}" placeholder="College Name" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="orgApprover" class="col-sm-2 col-form-label-lg" style="text-align:right;margin-top:12px;">Organization Approver</label>
+                    <div class="col-sm-7">
+                      <input th:if="${disable == 'true'}" type="text" th:field="${wrapper.adminSettings.orgApprover}" placeholder="Organization Approver" class="form-control input-lg" th:attr="disabled=${disable}"/>
+                      <input th:unless="${disable == 'true'}" type="text" th:field="${wrapper.adminSettings.orgApprover}" placeholder="Organization Approver" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="addDepartments" class="col-sm-2 col-form-label-lg" style="text-align:right;margin-top:12px;">Departments</label>
+                    <div class="col-sm-7">
+                      <div class="row" style="padding:10px 16px; float:right;">
+                        <button th:if="${disable == 'true'}" class="btn" type="submit" formaction="/addApprover" th:attr="disabled=${disable}"><span class="glyphicon glyphicon-plus"></span> Add Row</button>
+                        <button th:unless="${disable == 'true'}" class="btn" type="submit" formaction="/addApprover"><span class="glyphicon glyphicon-plus"></span> Add Row</button>
+
+                        <button th:if="${disable == 'true'}" class="btn" type="submit" formaction="/deleteApprover" th:attr="disabled=${disable}"><span class="glyphicon glyphicon-minus"></span> Delete Row</button>
+                        <button th:unless="${disable == 'true'}" class="btn" type="submit" formaction="/deleteApprover"><span class="glyphicon glyphicon-minus"></span> Delete Row</button>
+                      </div>
+                      <div class="row" style="padding:10px 16px;">
+                        <table id="department-table">
+                          <tr>
+                            <th>Department Code</th>
+                            <th>Staff Approver</th>
+                            <th>Department Approver</th>
+                          </tr>
+                          <tr th:each="approver, itemStat : ${wrapper.approverList}">
+                            <td>
+                              <input th:if="${disable == 'true'}" type="text" th:name="|approverList[${itemStat.index}].departmentCode|" th:value="${approver.getDepartmentCode()}" th:attr="disabled=${disable}" style="border: 0px;background-color: #f3f3f3;"/>
+                              <input th:unless="${disable == 'true'}" type="text" th:name="|approverList[${itemStat.index}].departmentCode|" th:value="${approver.getDepartmentCode()}"/>
+                            </td>
+                            <td>
+                              <input th:if="${disable == 'true'}" type="text" th:name="|approverList[${itemStat.index}].staffApprover|" th:value="${approver.getStaffApprover()}" th:attr="disabled=${disable}" style="border: 0px;background-color: #f3f3f3;"/>
+                              <input th:unless="${disable == 'true'}" type="text" th:name="|approverList[${itemStat.index}].staffApprover|" th:value="${approver.getStaffApprover()}"/>
+                            </td>
+                            <td>
+                              <input th:if="${disable == 'true'}" type="text" th:name="|approverList[${itemStat.index}].departmentApprover|" th:value="${approver.getDepartmentApprover()}" th:attr="disabled=${disable}" style="border: 0px;background-color: #f3f3f3;"/>
+                              <input th:unless="${disable == 'true'}" type="text" th:name="|approverList[${itemStat.index}].departmentApprover|" th:value="${approver.getDepartmentApprover()}"/>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:32px;">
+                    <div class="col-sm-3" >
+                      <input type="submit" class="btn btn-primary btn-block" value="Save" th:disabled="${disable == 'true'}"/>
+                    </div>
+                    <div class="col-sm-3" >
+                      <input type="reset" class="btn btn-primary btn-block" value="Undo Changes" th:disabled="${disable == 'true'}"/>
+                    </div>
+                  </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="/fragments/footer :: footer"/>
+
+</body>
+</html>

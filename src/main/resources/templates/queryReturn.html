@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+
+<head>
+    <div th:replace="/fragments/header :: header"/>
+</head>
+
+<body>
+
+<div th:replace="/fragments/header :: navbar"/>
+
+<div class="container">
+
+    <h1 class="jumbotron" th:if="${noneFound}">
+        No form found with this search query
+        <br></br>
+        <a th:href="@{'/queryDatabase'}" class="col-md-6">Return to the search bar</a>
+        <br></br>
+	</h1>
+    <h1 class="jumbotron" th:if="${!noneFound}">
+    Search Results:
+        <br></br>
+    </h1>
+    <div class="panel-default well col-md-6" th:each="form : ${AllForms}">
+        <div class="panel-heading">
+            Major Declaration Form #<h1 th:text="${form.id}"></h1>  Status: <h2 th:text="${form.status}"></h2>
+        </div>
+        <br></br>
+        <label th:if="${form.status == 'OPEN'}" for="progressBar1">Workflow progress:</label>
+        <progress th:if="${form.status == 'OPEN'}" id="progressBar1" th:max="${form.totalSteps}" th:value="${form.current - 1}"> unavailable </progress>
+        <a th:href="@{'/tracking/{trackingId}' (trackingId=${form.trackingId})}" class="col-md-3">
+            <button type="button" class="btn btn-primary" th:text="Track">Track</button>
+        </a>
+    </div>
+    <div class="panel-default well col-md-6" th:each="changeTS : ${AllChangeTS}">
+        <div class="panel-heading">
+            Change of Torah Studies Form #<h1 th:text="${changeTS.id}"></h1>  Status: <h2 th:text="${changeTS.status}"></h2>
+        </div>
+        <br></br>
+        <label th:if="${changeTS.status == 'OPEN'}" for="progressBar1">Workflow progress:</label>
+        <progress th:if="${changeTS.status == 'OPEN'}" id="progressBar1" th:max="${changeTS.totalSteps}" th:value="${changeTS.current - 1}"> unavailable </progress>
+        <a th:href="@{'/tracking/{trackingId}' (trackingId=${changeTS.trackingId})}" class="col-md-3">
+            <button type="button" class="btn btn-primary" th:text="Track">Track</button>
+        </a>
+    </div>
+    <div class="panel-default well col-md-6" th:each="leaveOfAb : ${AllLeaveOfAb}">
+        <div class="panel-heading">
+            Leave of Absence #<h1 th:text="${leaveOfAb.id}"></h1>  Status: <h2 th:text="${leaveOfAb.status}"></h2>
+        </div>
+        <br></br>
+        <label th:if="${leaveOfAb.status == 'OPEN'}" for="progressBar1">Workflow progress:</label>
+        <progress th:if="${leaveOfAb.status == 'OPEN'}" id="progressBar1" th:max="${leaveOfAb.totalSteps}" th:value="${leaveOfAb.current - 1}"> unavailable </progress>
+        <a th:href="@{'/tracking/{trackingId}' (trackingId=${leaveOfAb.trackingId})}" class="col-md-3">
+            <button type="button" class="btn btn-primary" th:text="Track">Track</button>
+        </a>
+    </div>
+</div>
+<div th:replace="/fragments/footer :: footer"/>
+
+</body>
+</html>

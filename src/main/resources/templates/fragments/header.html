@@ -1,0 +1,65 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+
+    <div th:fragment="header">
+        <title  th:attr="data-custom=#{thymeleaf.app.title}">KASC Vehicle Pass</title>
+
+        <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+              th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"
+              rel="stylesheet" media="screen"/>
+
+        <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+                th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+        <script type="text/javascript" src="../js/main.js"></script>
+
+        <link rel="stylesheet" th:href="@{/css/main.css}"
+              href="../../css/main.css"/>
+    </div>
+
+</head>
+
+<body>
+
+<div th:fragment="navbar">
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <img src="../../images/kasc.png" alt="KASC" width="60" height="50"/>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse navbar-left">
+				<ul class="nav navbar-nav" sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_APPROVER')">
+                    <li class="active"><a th:href="@{/userDashboard}">&nbsp;&nbsp;Home</a></li>
+                </ul>
+                <ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <li class="active"><a th:href="@{/admin/dashboard}">&nbsp;&nbsp;Home</a></li>
+                </ul>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse navbar-right">
+				<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
+                    <li class="active"><a th:href="@{/changePassword}">Change Password</a></li>
+                </ul>
+				<ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_USER')">
+                    <li class="active"><a th:href="@{/userProfile}">Profile</a></li>
+                </ul>
+                <ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <li class="active"><a th:href="@{/adminSettings}">Settings</a></li>
+                </ul>
+                <ul class="nav navbar-nav" sec:authorize="!isAuthenticated()">
+                    <li class="active"><a th:href="@{/registration}">Registration</a></li>
+                </ul>
+                <ul class="nav navbar-nav" sec:authorize="!isAuthenticated()">
+                    <li class="active"><a th:href="@{/login}">Login</a></li>
+                </ul>
+                <ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
+                    <li class="active"><a th:href="@{/logout}">Sign Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+</body>
+</html>

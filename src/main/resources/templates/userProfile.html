@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <div th:replace="/fragments/header :: header"/>
+</head>
+
+<body>
+
+<div th:replace="/fragments/header :: navbar"/>
+
+
+<div class="container">
+
+    <div class="alert alert-info" th:if="${successMessage}" th:utext="${successMessage}"></div>
+
+    <div class="row" style="margin-top:10px">
+        <div>
+            <form action="#" th:action="@{/userProfile}"
+                  th:object="${wrapper}" method="post" role="form">
+                  <div class="row" style="background-color: #e6e6e6;">
+                    <h3 style="margin-left: 8px;">User Profile</h3>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="nameOfTheStudent" class="col-sm-3 col-form-label-lg" style="text-align:right;margin-top:12px;">Name of the Student</label>
+                    <div class="col-sm-6">
+                      <input type="text" th:field="${wrapper.userProfile.nameOfTheStudent}" placeholder="Name of the Student" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="department" class="col-sm-3 col-form-label-lg" style="text-align:right;margin-top:12px;">Department</label>
+                    <div class="col-sm-6">
+                      <select th:field="${wrapper.userProfile.department}" class="form-control form-select-lg">
+                        <option th:each="department : ${wrapper.departmentList}" th:value="${department}" th:text="${department}" th:selected="${department==wrapper.userProfile.department}"></option>
+                      </select>
+<!--                       <input type="text" th:field="*{department}" placeholder="Department" class="form-control input-lg"/> -->
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="degree" class="col-sm-3 col-form-label-lg" style="text-align:right;margin-top:12px;">Degree</label>
+                    <div class="col-sm-6">
+                      <input type="text" th:field="${wrapper.userProfile.degree}" placeholder="Degree" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="branch" class="col-sm-3 col-form-label-lg" style="text-align:right;margin-top:12px;">Branch</label>
+                    <div class="col-sm-6">
+                      <input type="text" th:field="${wrapper.userProfile.branch}" placeholder="Branch" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="registerNumber" class="col-sm-3 col-form-label-lg" style="text-align:right;margin-top:12px;">Register Number</label>
+                    <div class="col-sm-6">
+                      <input type="number" th:field="${wrapper.userProfile.registerNumber}" placeholder="Register Number" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="studentMobileNumber" class="col-sm-3 col-form-label-lg" style="text-align:right;margin-top:12px;">Student Mobile Number</label>
+                    <div class="col-sm-6">
+                      <input type="text" th:field="${wrapper.userProfile.studentMobileNumber}" placeholder="Student Mobile Number" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="parentName" class="col-sm-3 col-form-label-lg" style="text-align:right;margin-top:12px;">Parent Name</label>
+                    <div class="col-sm-6">
+                      <input type="text" th:field="${wrapper.userProfile.parentName}" placeholder="Parent Name" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="parentMobileNumber" class="col-sm-3 col-form-label-lg" style="text-align:right;margin-top:12px;">Parent Mobile Number</label>
+                    <div class="col-sm-6">
+                      <input type="text" th:field="${wrapper.userProfile.parentMobileNumber}" placeholder="Parent Mobile Number" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="drivingLicenseNumber" class="col-sm-3 col-form-label-lg" style="text-align:right;margin-top:12px;">Driving License Number</label>
+                    <div class="col-sm-6">
+                      <input type="text" th:field="${wrapper.userProfile.drivingLicenseNumber}" placeholder="Driving License Number" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:8px;">
+                    <label for="residentialAddress" class="col-sm-3 col-form-label-lg" style="text-align:right;margin-top:12px;">Residential Address</label>
+                    <div class="col-sm-6">
+                      <input type="text" th:field="${wrapper.userProfile.residentialAddress}" placeholder="Residential Address" class="form-control input-lg"/>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:32px;">
+                    <div class="col-sm-3" >
+                      <input type="submit" class="btn btn-primary btn-block" value="Save"/>
+                    </div>
+                    <div class="col-sm-3" >
+                      <input type="reset" class="btn btn-primary btn-block" value="Undo Changes"/>
+                    </div>
+                  </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="/fragments/footer :: footer"/>
+
+</body>
+</html>

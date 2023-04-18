@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="/fragments/header :: header"/>
+</head>
+
+<body>
+
+<div th:replace="/fragments/header :: navbar"/>
+
+<div class="container">
+    <h2>
+	    <span class="col-md-4">
+	        <a th:href="@{/form}">Major Declaration</a>
+	    </span>
+	
+	
+	    <span class="col-md-4">
+	        <a th:href="@{/changeTS}">Change Torah Studies</a>
+	    </span>
+	
+	
+	    <span class="col-md-4">
+	        <a th:href="@{/leaveOfAb}">Leave of Absence</a>
+	    </span>
+    </h2>
+
+</div>
+
+<div th:replace="/fragments/footer :: footer"/>
+
+</body>
+</html>
